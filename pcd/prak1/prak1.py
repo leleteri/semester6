@@ -18,8 +18,8 @@ for i in range(row):
 kanvas2 = kanvas1.copy()
 for i in range(row):
     for j in range(col):
-        for k in range(3):
-            if kanvas2[i, j, k] < 150:
+        for k in range (3):
+            if (kanvas2[i, j, k] < 150):
                 kanvas2[i, j, k] = 255
 
 # Nomor 3

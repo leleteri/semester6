@@ -42,8 +42,6 @@
         ];
 
         shellHook = ''
-          mkdir -p daming
-          cd ./daming
           zsh
         '';
       };
@@ -57,8 +55,6 @@
         ];
 
         shellHook = ''
-          mkdir -p pcd
-          cd ./pcd
           zsh
         '';
       };

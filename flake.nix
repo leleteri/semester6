@@ -11,33 +11,39 @@
     python = pkgs.python312;
   in
   {
+    packages.${system} = {
+      apyori = import ./_nix/apyori.nix;
+      # olapy = import ./_nix/olapy.nix;
+
+      default = [
+        (python.withPackages (py: with py; [
+          numpy
+          pandas
+          matplotlib
+        ]))
+      ];
+
+      daming = self.packages.${system}.default ++ [
+        (python.withPackages (py: with py; [
+          scikit-learn
+          seaborn
+          plotly
+          textblob
+          self.packages.${system}.apyori
+        ]))
+      ];
+    };
+      
     devShells.${system} = {
       default = pkgs.mkShell {
-        packages = [ 
-          (python.withPackages(py: [
-            py.numpy
-            py.pandas
-            py.matplotlib
-          ]))
-        ];
+        packages = self.packages.${system}.default; 
         shellHook = ''zsh'';
       };
 
-      daming = pkgs.mkShell {
+      pcd = pkgs.mkShell {
         packages = [
           (python.withPackages (py:[
-            py.numpy
-            py.pandas
-            py.matplotlib
-            py.scikit-learn
-            py.seaborn
-            py.plotly
-            py.textblob
-
-            # Manual Derivation
-            # py.pycaret
-            # py.apyori
-            # py.olapy
+            py.opencv4Full
           ]))
         ];
 
@@ -46,14 +52,8 @@
         '';
       };
 
-      pcd = pkgs.mkShell {
-        packages = [
-          (python.withPackages (py:[
-            py.numpy
-            py.opencv4Full
-          ]))
-        ];
-
+      daming = pkgs.mkShell {
+        packages = self.packages.${system}.daming;
         shellHook = ''
           zsh
         '';
